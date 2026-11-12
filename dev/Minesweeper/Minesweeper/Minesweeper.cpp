@@ -44,9 +44,9 @@ int main()
 			}
 			runningCreation = true;
 			Board game = Board(input2, input3);
-			std::cout << "\nBoard successfully created!\n\n";
 			Game sweeper = Game(game, input3);
 			bool gRun = true;
+			bool firstCheck = true;
 			std::string input4;
 			sweeper.print();
 			while (gRun) { 
@@ -65,7 +65,8 @@ int main()
 					sweeper.moveRight();
 				}
 				if (input4 == "e" || input4 == "E") {
-					sweeper.reveal();
+					sweeper.reveal(firstCheck);
+					firstCheck = false;
 				}
 				if (input4 == "f" || input4 == "F") {
 					sweeper.flag();

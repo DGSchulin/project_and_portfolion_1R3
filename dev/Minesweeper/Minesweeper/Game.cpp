@@ -83,8 +83,17 @@ void Game::moveRight()
 	}
 }
 
-void Game::reveal()
+void Game::reveal(bool first)
 {
+	if (gameboard.getAt(cursor, false) == 9 && first == true) {
+		bool loop = true;
+		while (loop == true) {
+			gameboard = Board(sq, mCount);
+			if (gameboard.getAt(cursor, false) != 9) {
+				loop = false;
+			}
+		}
+	}
 	gameboard.setAt(cursor, true, gameboard.getAt(cursor, false));
 }
 
