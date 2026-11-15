@@ -15,7 +15,7 @@ int main()
 		std::cin >> input;
 		std::cout << "\n";
 		if (input == "1") {
-			std::cout << "\nHow large should the board be? Ex: 4 = 4x4 board.\n";
+			std::cout << "\033[2J\033[HHow large should the board be? Ex: 4 = 4x4 board.\n\n";
 			while (runningCreation) {
 				std::cin >> input2;
 				if (input2 > 99) {
@@ -29,24 +29,26 @@ int main()
 				}
 			}
 			runningCreation = true;
-			std::cout << "\nHow many mines should be present? Make sure to not add an amount of mines equal to or greater than the total board size.\n";
+			std::cout << "\nHow many mines should be present? Make sure to not add an amount of mines equal to or greater than the total board size.\n\n";
 			while (runningCreation) {
 				std::cin >> input3;
 				if (input3 <= 0) {
-					std::cout << "\nGiven amount too small, please try again.\n";
+					std::cout << "\nGiven amount too small, please try again.\n\n";
 				}
 				else if (input3 >= input2 * input2) {
-					std::cout << "\nGiven amount too large for the board size, please try again.\n";
+					std::cout << "\nGiven amount too large for the board size, please try again.\n\n";
 				}
 				else {
 					runningCreation = false;
 				}
 			}
+			std::cout << "\033[2J\033[H";
 			bool fairGame = true;
 			if ((input2 * input2) - input3 <= 1 || input3 == (input2 * input2) - 1 || input3 <= (input2 * input2) * 0.1) {
 				fairGame = false;
 				std::cout << "Due to the given board parameters being considered too easy, this game of Minesweeper will not be counted for your statistics.\n";
 			}
+			std::cout << "\n";
 			runningCreation = true;
 			Board game = Board(input2, input3);
 			Game sweeper = Game(game, input3);
@@ -56,7 +58,7 @@ int main()
 			sweeper.print();
 			while (gRun) { 
 				std::cin >> input4;
-
+				std::cout << "\033[2J\033[H";
 				if (input4 == "w" || input4 == "W") {
 					sweeper.moveUp();
 				}
@@ -83,17 +85,17 @@ int main()
 				std::cout << "\n\n";
 				if (sweeper.isMineTriggered() == true || input4 == "debuglose") {
 					gRun = false;
-					std::cout << "You revealed a mine! You lose!\n\n";
+					std::cout << "You revealed a mine! You lose!\n\n\n";
 				}
 				else if (sweeper.isComplete() == true || input4 == "debugwin") {
 					gRun = false;
-					std::cout << "You cleared the board! You win!\n\n";
+					std::cout << "You cleared the board! You win!\n\n\n";
 				}
 			}
 		}
 
 		if (input == "2") {
-			std::cout << "Use WASD to move your cursor\nPress E to reveal a square\nPress F to flag a square\nEnter exit to exit the game\n\n";
+			std::cout << "Use WASD to move your cursor\nPress E to reveal a square\nPress F to flag a square\nEnter exit to exit the game\n\n\n";
 		}
 
 		if (input == "4") {
