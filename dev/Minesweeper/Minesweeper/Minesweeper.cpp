@@ -78,6 +78,7 @@ int main()
 				if (input4 == "f" || input4 == "F") {
 					sweeper.flag();
 				}
+				sweeper.autoClear();
 				sweeper.print();
 				if (input4 == "exit" || input4 == "EXIT") {
 					gRun = false;

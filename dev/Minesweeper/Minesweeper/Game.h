@@ -17,4 +17,5 @@ public:
 	void flag();
 	bool isMineTriggered();
 	bool isComplete();
+	void autoClear();
 };

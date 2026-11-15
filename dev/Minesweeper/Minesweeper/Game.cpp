@@ -17,14 +17,27 @@ void Game::print()
 	std::cout << "   ";
 	for (int i = 0; i < sq; i++) {
 		std::cout << i + 1;
+		if (sq > 9) {
+			std::cout << " ";
+		}
 	}
 	std::cout << "\n   ";
 	for (int i = 0; i < sq; i++) {
 		std::cout << "_";
+		if (sq > 9) {
+			std::cout << "_";
+		}
 	}
+	int e = 1;
 	for (int i = 0; i < values.size(); i++) {
 		if (i % sq == 0) {
-			std::cout << "\n" << i / 4 + 1 << " |";
+			if (e < 10) {
+				std::cout << "\n" << e << " |";
+			}
+			else {
+				std::cout << "\n" << e << "|";
+			}
+			e++;
 		}
 		if (gameboard.getVis()[i] == 9) {
 			std::cout << "!";
@@ -35,8 +48,14 @@ void Game::print()
 		else if (gameboard.getVis()[i] == -2) {
 			std::cout << "F";
 		}
+		else if (gameboard.getVis()[i] == 0) {
+			std::cout << " ";
+		}
 		else {
 			std::cout << gameboard.getVis()[i];
+		}
+		if (sq > 9) {
+			std::cout << " ";
 		}
 	}
 	std::cout << "\n\nCursor is at: \nX: " << (cursor % sq) + 1 << "\nY: " << (cursor / sq) + 1;
@@ -162,5 +181,48 @@ bool Game::isComplete()
 		}
 	}
 	return smile;
+}
+
+void Game::autoClear()
+{
+	bool cleared = true;
+	while (cleared == true){
+		cleared = false;
+		for (int i = 0; i < sq * sq; i++) {
+			if (gameboard.getAt(i, true) == 0) {
+				std::vector<int> positions;
+				if (i - sq > -1 && i % sq != 0) {
+					positions.push_back(i - sq - 1);
+				}
+				if (i - sq > -1) {
+					positions.push_back(i - sq);
+				}
+				if (i - sq > -1 && i % sq != sq - 1) {
+					positions.push_back(i - sq + 1);
+				}
+				if (i + sq < sq * sq && i % sq != 0) {
+					positions.push_back(i + sq - 1);
+				}
+				if (i + sq < sq * sq) {
+					positions.push_back(i + sq);
+				}
+				if (i + sq < sq * sq && i % sq != sq - 1) {
+					positions.push_back(i + sq + 1);
+				}
+				if (i % sq != 0) {
+					positions.push_back(i - 1);
+				}
+				if (i % sq != sq - 1) {
+					positions.push_back(i + 1);
+				}
+				for (int e = 0; e < positions.size(); e++) {
+					if (gameboard.getAt(positions[e], true) == -1) {
+						cleared = true;
+						gameboard.setAt(positions[e], true, gameboard.getAt(positions[e], false));
+					}
+				}
+			}
+		}
+	}
 }
 
