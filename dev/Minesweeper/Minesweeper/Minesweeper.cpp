@@ -42,6 +42,11 @@ int main()
 					runningCreation = false;
 				}
 			}
+			bool fairGame = true;
+			if ((input2 * input2) - input3 <= 1 || input3 == (input2 * input2) - 1 || input3 <= (input2 * input2) * 0.1) {
+				fairGame = false;
+				std::cout << "Due to the given board parameters being considered too easy, this game of Minesweeper will not be counted for your statistics.\n";
+			}
 			runningCreation = true;
 			Board game = Board(input2, input3);
 			Game sweeper = Game(game, input3);
