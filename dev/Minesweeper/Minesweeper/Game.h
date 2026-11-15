@@ -13,8 +13,9 @@ public:
 	void moveDown();
 	void moveLeft();
 	void moveRight();
-	void reveal();
+	void reveal(bool first);
 	void flag();
 	bool isMineTriggered();
 	bool isComplete();
+	void autoClear();
 };
