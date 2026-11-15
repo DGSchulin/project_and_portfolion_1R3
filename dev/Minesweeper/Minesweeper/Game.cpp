@@ -94,6 +94,46 @@ void Game::reveal(bool first)
 			}
 		}
 	}
+	if (first == false && gameboard.getAt(cursor, true) >= 0 && gameboard.getAt(cursor, true) < 8) {
+		std::vector<int> positions;
+		if (cursor - sq > -1 && cursor % sq != 0) {
+			positions.push_back(cursor - sq - 1);
+		}
+		if (cursor - sq > -1) {
+			positions.push_back(cursor - sq);
+		}
+		if (cursor - sq > -1 && cursor % sq != sq - 1) {
+			positions.push_back(cursor - sq + 1);
+		}
+		if (cursor + sq < sq * sq && cursor % sq != 0) {
+			positions.push_back(cursor + sq - 1);
+		}
+		if (cursor + sq < sq * sq) {
+			positions.push_back(cursor + sq);
+		}
+		if (cursor + sq < sq * sq && cursor % sq != sq - 1) {
+			positions.push_back(cursor + sq + 1);
+		}
+		if (cursor % sq != 0) {
+			positions.push_back(cursor - 1);
+		}
+		if (cursor % sq != sq - 1) {
+			positions.push_back(cursor + 1);
+		}
+		int flags = 0;
+		for (int i = 0; i < positions.size(); i++) {
+			if (gameboard.getAt(positions[i], true) == -2) {
+				flags++;
+			}
+		}
+		if (flags == gameboard.getAt(cursor, true)) {
+			for (int i = 0; i < positions.size(); i++) {
+				if (gameboard.getAt(positions[i], true) != -2) {
+					gameboard.setAt(positions[i], true, gameboard.getAt(positions[i], false));
+				}
+			}
+		}
+	}
 	gameboard.setAt(cursor, true, gameboard.getAt(cursor, false));
 }
 
@@ -123,3 +163,4 @@ bool Game::isComplete()
 	}
 	return smile;
 }
+
