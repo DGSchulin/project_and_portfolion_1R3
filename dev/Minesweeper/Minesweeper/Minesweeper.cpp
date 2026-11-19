@@ -96,7 +96,7 @@ int main()
 		}
 
 		if (input == "2") {
-			std::cout << "Use WASD to move your cursor\nPress E to reveal a square\nPress F to flag a square\nEnter exit to exit the game\n\n\n";
+			std::cout << "Use WASD to move your cursor\nPress E to reveal a square\nPress F to flag or unflag a square\nEnter exit to exit the game\n\n\n";
 		}
 
 		if (input == "4") {
