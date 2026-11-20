@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Keeper.h"
 #include <string>
 #include <iostream>
 
@@ -9,6 +10,7 @@ int main()
 	int input3;
 	bool running = true;
 	bool runningCreation = true;
+	Keeper keep = Keeper();
 
 	while (running == true) {
 		std::cout << "1: Generate game\n2: Show Controls\n3: View stats\n4: End program.\n\n";
@@ -86,22 +88,50 @@ int main()
 				std::cout << "\n\n";
 				if (sweeper.isMineTriggered() == true || input4 == "debuglose") {
 					gRun = false;
-					std::cout << "You revealed a mine! You lose!\n\n\n";
+					std::cout << "You revealed a mine! You lose!\n\n\n\n";
+					if (fairGame == true) {
+						keep.reset(false);
+						keep.saveStats();
+					}
 				}
 				else if (sweeper.isComplete() == true || input4 == "debugwin") {
 					gRun = false;
-					std::cout << "You cleared the board! You win!\n\n\n";
+					std::cout << "You cleared the board! You win!\n\n\n\n";
+					if (fairGame == true) {
+						keep.addWin();
+						keep.saveStats();
+					}
 				}
 			}
 		}
 
 		if (input == "2") {
-			std::cout << "Use WASD to move your cursor\nPress E to reveal a square\nPress F to flag or unflag a square\nEnter exit to exit the game\n\n\n";
+			std::cout << "\033[2J\033[HUse WASD to move your cursor\nPress E to reveal a square\nPress F to flag or unflag a square\nEnter exit to exit the game\n\n\n";
+		}
+
+		if (input == "3") {
+			std::cout << "\033[2J\033[HTotal wins: " << keep.getTotal() << "\nCurrent streak: " << keep.getStreak();
+			std::cout << "\n\n\nType back to go back\nType clear to clear all stats.\n\n";
+			bool helpmenu = true;
+			while (helpmenu == true) {
+				std::cin >> input;
+				if (input == "back" || input == "BACK") {
+					helpmenu = false;
+					std::cout << "\n\n";
+				}
+				if (input == "clear" || input == "CLEAR") {
+					keep.reset(true);
+					std::cout << "\nStats cleared!\n\n";
+					keep.saveStats();
+					helpmenu = false;
+				}
+			}
 		}
 
 		if (input == "4") {
+			std::cout << "\033[2J\033[HThank you for playing!";
 			running = false;
-			
+			keep.saveStats();
 		}
 	}
 }
