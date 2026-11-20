@@ -18,14 +18,24 @@ void Game::print()
 	for (int i = 0; i < sq; i++) {
 		std::cout << i + 1;
 		if (sq > 9) {
-			std::cout << " ";
+			if (i < 9) {
+				std::cout << "  ";
+			}
+			else {
+				std::cout << " ";
+			}
 		}
 	}
 	std::cout << "\n   ";
 	for (int i = 0; i < sq; i++) {
 		std::cout << "_";
 		if (sq > 9) {
-			std::cout << "_";
+			if (i != sq - 1) {
+				std::cout << "__";
+			}
+			else {
+				std::cout << "_";
+			}
 		}
 	}
 	int e = 1;
@@ -55,7 +65,7 @@ void Game::print()
 			std::cout << gameboard.getVis()[i];
 		}
 		if (sq > 9) {
-			std::cout << " ";
+			std::cout << "  ";
 		}
 	}
 	std::cout << "\n\nCursor is at: \nX: " << (cursor % sq) + 1 << "\nY: " << (cursor / sq) + 1;
@@ -102,9 +112,14 @@ void Game::moveRight()
 	}
 }
 
-void Game::reveal(bool first)
+int Game::reveal(bool first)
 {
-	if (gameboard.getAt(cursor, false) == 9 && first == true) {
+	bool isFlag = false;
+	if (gameboard.getAt(cursor, true) == -2) {
+		isFlag = true;
+	}
+	int tilesRevealed = 0;
+	if (gameboard.getAt(cursor, false) == 9 && first == true && isFlag == false) {
 		bool loop = true;
 		while (loop == true) {
 			gameboard = Board(sq, mCount);
@@ -113,7 +128,7 @@ void Game::reveal(bool first)
 			}
 		}
 	}
-	if (first == false && gameboard.getAt(cursor, true) >= 0 && gameboard.getAt(cursor, true) < 8) {
+	if (first == false && gameboard.getAt(cursor, true) >= 0 && gameboard.getAt(cursor, true) < 8 && isFlag == false) {
 		std::vector<int> positions;
 		if (cursor - sq > -1 && cursor % sq != 0) {
 			positions.push_back(cursor - sq - 1);
@@ -149,16 +164,31 @@ void Game::reveal(bool first)
 			for (int i = 0; i < positions.size(); i++) {
 				if (gameboard.getAt(positions[i], true) != -2) {
 					gameboard.setAt(positions[i], true, gameboard.getAt(positions[i], false));
+					if (gameboard.getAt(positions[i], false) != 9 && gameboard.getAt(positions[i], true) != 0) {
+						tilesRevealed++;
+					}
 				}
 			}
 		}
 	}
-	gameboard.setAt(cursor, true, gameboard.getAt(cursor, false));
+	if (isFlag == false) {
+		gameboard.setAt(cursor, true, gameboard.getAt(cursor, false));
+		if (gameboard.getAt(cursor, false) != 9 && gameboard.getAt(cursor, true) != 0) {
+			tilesRevealed++;
+		}
+	}
+
+	return tilesRevealed;
 }
 
 void Game::flag()
 {
-	gameboard.setAt(cursor, true, -2);
+	if (gameboard.getAt(cursor, true) == -2) {
+		gameboard.setAt(cursor, true, -1);
+	}
+	else if (gameboard.getAt(cursor, true) == -1) {
+		gameboard.setAt(cursor, true, -2);
+	}
 }
 
 bool Game::isMineTriggered()
@@ -183,8 +213,9 @@ bool Game::isComplete()
 	return smile;
 }
 
-void Game::autoClear()
+int Game::autoClear()
 {
+	int tilesRevealed = 0;
 	bool cleared = true;
 	while (cleared == true){
 		cleared = false;
@@ -218,11 +249,14 @@ void Game::autoClear()
 				for (int e = 0; e < positions.size(); e++) {
 					if (gameboard.getAt(positions[e], true) == -1) {
 						cleared = true;
+						tilesRevealed++;
 						gameboard.setAt(positions[e], true, gameboard.getAt(positions[e], false));
 					}
 				}
 			}
 		}
 	}
+	
+	return tilesRevealed;
 }
 
