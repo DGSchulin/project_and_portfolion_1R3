@@ -50,6 +50,10 @@ int main()
 				fairGame = false;
 				std::cout << "Due to the given board parameters being considered too easy, this game of Minesweeper will not be counted for your statistics.\n";
 			}
+			if (fairGame == true) {
+				keep.addGame();
+				keep.saveStats();
+			}
 			std::cout << "\n";
 			runningCreation = true;
 			Board game = Board(input2, input3);
@@ -74,13 +78,29 @@ int main()
 					sweeper.moveRight();
 				}
 				if (input4 == "e" || input4 == "E") {
-					sweeper.reveal(firstCheck);
+					int t = sweeper.reveal(firstCheck);
+					
+					if (fairGame == true) {
+						for (int i = 0; i < t; i++) {
+							keep.addTile();
+						}
+						keep.saveStats();
+					}
+
 					firstCheck = false;
 				}
 				if (input4 == "f" || input4 == "F") {
 					sweeper.flag();
 				}
-				sweeper.autoClear();
+				
+				int e = sweeper.autoClear();
+				if (fairGame == true) {
+					for (int i = 0; i < e; i++) {
+						keep.addTile();
+					}
+					keep.saveStats();
+				}
+				
 				sweeper.print();
 				if (input4 == "exit" || input4 == "EXIT") {
 					gRun = false;
@@ -90,7 +110,7 @@ int main()
 					gRun = false;
 					std::cout << "You revealed a mine! You lose!\n\n\n\n";
 					if (fairGame == true) {
-						keep.reset(false);
+						keep.addLoss();
 						keep.saveStats();
 					}
 				}
@@ -110,7 +130,7 @@ int main()
 		}
 
 		if (input == "3") {
-			std::cout << "\033[2J\033[HTotal wins: " << keep.getTotal() << "\nCurrent streak: " << keep.getStreak();
+			std::cout << "\033[2J\033[HTotal wins: " << keep.getTotal() << "\nTotal losses: " << keep.getLosses() << "\nTotal games played: " << keep.getTotalGames() << "\nCurrent streak: " << keep.getStreak() << "\nTotal tiles revealed: " << keep.getTiles();
 			std::cout << "\n\n\nType back to go back\nType clear to clear all stats.\n\n";
 			bool helpmenu = true;
 			while (helpmenu == true) {
