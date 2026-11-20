@@ -28,12 +28,12 @@ Pathetic.
 
 ### Week 2
 
-My next stand up will go here...
+What's the point?
 
 ### Week 3
 
-Stay tuned, this stand up is coming soon...
+After all,
 
 ### Week 4
 
-My final stand up...
+There's no salvaging this.
