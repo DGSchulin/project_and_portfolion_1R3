@@ -30,7 +30,12 @@ void Game::print()
 	for (int i = 0; i < sq; i++) {
 		std::cout << "_";
 		if (sq > 9) {
-			std::cout << "__";
+			if (i != sq - 1) {
+				std::cout << "__";
+			}
+			else {
+				std::cout << "_";
+			}
 		}
 	}
 	int e = 1;

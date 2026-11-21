@@ -13,18 +13,18 @@ int main()
 	Keeper keep = Keeper();
 
 	while (running == true) {
-		std::cout << "1: Generate game\n2: Show Controls\n3: View stats\n4: End program.\n\n";
+		std::cout << "1: Generate game.\n2: Show controls.\n3: View stats.\n4: End program.\n\n";
 		std::cin >> input;
 		std::cout << "\n";
 		if (input == "1") {
 			std::cout << "\033[2J\033[HHow large should the board be? Ex: 4 = 4x4 board.\n\n";
 			while (runningCreation) {
 				std::cin >> input2;
-				if (input2 > 99) {
-					std::cout << "\nGiven size too large, please try again.\n";
+				if (input2 > 59) {
+					std::cout << "\nGiven size too large, please try again.\n\n";
 				}
 				else if (input2 <= 1) {
-					std::cout << "\nGiven size too small, please try again.\n";
+					std::cout << "\nGiven size too small, please try again.\n\n";
 				}
 				else {
 					runningCreation = false;
@@ -126,12 +126,12 @@ int main()
 		}
 
 		if (input == "2") {
-			std::cout << "\033[2J\033[HUse WASD to move your cursor\nPress E to reveal a square\nPress F to flag or unflag a square\nEnter exit to exit the game\n\n\n";
+			std::cout << "\033[2J\033[HUse WASD to move your cursor.\nPress E to reveal a square.\nPress F to flag or unflag a square.\nEnter exit to exit the game.\n\n\n";
 		}
 
 		if (input == "3") {
 			std::cout << "\033[2J\033[HTotal wins: " << keep.getTotal() << "\nTotal losses: " << keep.getLosses() << "\nTotal games played: " << keep.getTotalGames() << "\nCurrent streak: " << keep.getStreak() << "\nTotal tiles revealed: " << keep.getTiles();
-			std::cout << "\n\n\nType back to go back\nType clear to clear all stats.\n\n";
+			std::cout << "\n\n\nType back to go back.\nType clear to clear all stats.\n\n";
 			bool helpmenu = true;
 			while (helpmenu == true) {
 				std::cin >> input;
